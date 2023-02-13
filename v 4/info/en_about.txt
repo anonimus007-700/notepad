@@ -1,0 +1,10 @@
+This program encodes text into .txt format with multi-step encoding.
+
+Coding:
+Click the "Encode" button on the main form. A notepad window will open. Enter or paste the text for encoding. The document is saved using the "File" menu command (at the top left of the window), "Save" or the "Ctrl+S" key combination. Specify the save location and click "Save". It is also possible to encode an existing text document with the extension .txt by opening it using the menu command "File" (at the top left of the window), "Open", specifying the desired file. Then the open file is saved on the data carrier in the described way.
+
+Decode:
+Click the "Decode" button on the main form. Specify the storage location and the name of the desired file to be decoded, click the "Open" button. The specified file will be opened already decoded.
+
+Storage in unencoded form:
+To save the document in an unencoded form, click "File" (at the top left of the window), "Save as". Specify the save location and click "Save".
