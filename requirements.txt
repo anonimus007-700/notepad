@@ -1,0 +1,4 @@
+tkinter
+customtkinter
+os
+base64
