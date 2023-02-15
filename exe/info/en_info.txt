@@ -1,0 +1,4 @@
+The program was developed by Oleksandr Pastushak, a 9th-grade student of the Communal Institution of General Secondary Education "Rozhyshchen Lyceum No. 4" of Rozhyshchen City Council, Lutsk District, Volyn Region.
+This software can be used in a professional environment between colleagues of a wide range of activities, although, thanks to multi-level coding, it is difficult for unwanted users to quickly access data exchange between employees, colleagues and partners.
+This program will be useful for enterprises, software developers, even the Armed Forces.
+2022
