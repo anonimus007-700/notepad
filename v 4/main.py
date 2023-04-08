@@ -5,6 +5,7 @@ from customtkinter import *
 
 import os
 import base64
+import configparser
 
 from conf import *
 
@@ -96,29 +97,42 @@ def new_file():
     
     text1.delete('1.0', END)
 
-
 def select_temp():
     if switch_var.get() == "on":
         set_appearance_mode("dark")
+        config.set('theme', 'theme', "dark")
+        config.set('var', 'switch_var', "on")
     else:
         set_appearance_mode("light")
+        config.set('theme', 'theme', "light")
+        config.set('var', 'switch_var', "off")
+
+    with open(r"conf.ini", 'w') as configfile:
+        config.write(configfile)
 
 def select_lang(choice):
     global lang
     lang = choice
-    
+
+    config.set('language', 'language', choice)
+
     if choice == "Українська":
         cod_text.set(value=ua["cod"])
         dec_text.set(value=ua["dec"])
         inf_text.set(value=ua["inf"])
         dov_text.set(value=ua["dov"])
         switch_1_text.set(value=ua["switch_1"])
+        config.set('var', 'langmenu_var', choice)
     else:
         cod_text.set(value=en["cod"])
         dec_text.set(value=en["dec"])
         inf_text.set(value=en["inf"])
         dov_text.set(value=en["dov"])
         switch_1_text.set(value=en["switch_1"])
+        config.set('var', 'langmenu_var', choice)
+
+    with open(r"conf.ini", 'w') as configfile:
+        config.write(configfile)
 
 def font_sizer():
     global font
@@ -127,14 +141,17 @@ def font_sizer():
     try:
         font = int(fonte.get_input())
     except:
-        font = 14
-    
+        font = 17
+
+    config.set('font', 'font', str(font))
+    with open(r"conf.ini", 'w') as configfile:
+        config.write(configfile)
+
     try:
         text1.configure(font=("ubuntu", font))
         text.configure(font=("ubuntu", font))
     except:
         pass
-
 
 def notepad(opn):
     global text1, notep
@@ -171,7 +188,6 @@ def notepad(opn):
 
     notep.mainloop()
 
-
 def info(opn):
     global text
     infor = CTkToplevel()
@@ -199,28 +215,53 @@ def info(opn):
     
     infor.mainloop()
 
+def configini():
+    config.add_section('language')
+    config.set('language', 'language', 'English')
 
-set_appearance_mode("dark")
+    config.add_section('font')
+    config.set('font', 'font', '17')
+
+    config.add_section('theme')
+    config.set('theme', 'theme', 'dark')
+    
+    config.add_section('var')
+    config.set('var', 'switch_var', 'on')
+    config.set('var', 'langmenu_var', 'English')
+
+    with open(r"conf.ini", 'w') as configfile:
+        config.write(configfile)
+
+config = configparser.ConfigParser()
+
+if os.path.isfile("conf.ini"):
+    pass
+else:
+    configini()
+
+config.readfp(open(r'conf.ini'))
+
+set_appearance_mode(config.get('theme', 'theme'))
 set_default_color_theme("green")
 
 
-lang = "Українська"
-font = 17
+lang = config.get('language', 'language')
+font = int(config.get('font', 'font'))
 
 
 root = CTk()
 root.geometry("804x454")
 root.title("Notepad++")
 root.iconbitmap('icon.ico')
-root. resizable(False, False)
+root.resizable(False, False)
 
 
 root.grid_columnconfigure(1, weight=1)
 root.grid_rowconfigure((0, 4, 2), weight=1)
 
 
-switch_var = StringVar(value="on")
-langmenu_var = StringVar(value="Українська")
+switch_var = StringVar(value=config.get('var', 'switch_var'))
+langmenu_var = StringVar(value=config.get('var', 'langmenu_var'))
 
 bg = PhotoImage(file="bg.png")
 
@@ -232,11 +273,11 @@ frame.grid(row=0, column=0, rowspan=6, sticky="nsew")
 frame.grid_rowconfigure(4, weight=1)
 
 
-cod_text = StringVar(value=ua["cod"])
-dec_text = StringVar(value=ua["dec"])
-inf_text = StringVar(value=ua["inf"])
-dov_text = StringVar(value=ua["dov"])
-switch_1_text = StringVar(value=ua["switch_1"])
+cod_text = StringVar(value=ua["cod"] if lang == "Українська" else en["cod"])
+dec_text = StringVar(value=ua["dec"] if lang == "Українська" else en["dec"])
+inf_text = StringVar(value=ua["inf"] if lang == "Українська" else en["inf"] )
+dov_text = StringVar(value=ua["dov"] if lang == "Українська" else en["dov"])
+switch_1_text = StringVar(value=ua["switch_1"] if lang == "Українська" else en["switch_1"])
 
 
 cod = CTkButton(root, textvariable=cod_text, font=("ubuntu", 17), command=lambda:notepad(False)).grid(row=0, column=0, padx=20, pady=(10, 0))

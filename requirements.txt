@@ -2,3 +2,4 @@ tkinter
 customtkinter
 os
 base64
+configparser
