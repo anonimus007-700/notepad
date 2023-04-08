@@ -1,5 +1,3 @@
-![code](exe/bg.png)
-
 <h1 align="center">This program is developed in python to encode text into a multi-step code:scream:</h1>
 
 First, install the necessary modules `pip install -r requirements.txt`.
