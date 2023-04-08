@@ -19,26 +19,29 @@ def keys(event):
         save_file()
 
 def decode_file(text):
-    decode = text.split(" ")
+    dec = base64.b64decode(text).decode("UTF-8")
+    dec = eval(base64.b16decode(dec).decode("UTF-8"))
 
-    dec = eval(base64.b64decode(decode[0]).decode("UTF-8"))
-    dec.reverse()
-    decode.pop(0)
-    cod_text = eval(base64.b64decode(decode[0]).decode("UTF-8"))
+    c = dec[0]
+    c.reverse()
 
-    x = [Decoder.rev_cod(i[-1], dec) for i in cod_text]
+    x = [Decoder.rev_cod(i[-1], c) for i in dec[1]]
     dec_int = [i[-1] for i in x]
 
     text1.delete('1.0', END)
     text1.insert('1.0', "".join(Decoder.int_to_text(dec_int)))
 
 def code_file(text):
-    global coding_text, rand
+    global comp
 
+    interim = []
     rand = randomer()
 
     tint = Coder.text_to_int(text)
     coding_text = [Coder.stud_cod(i, rand) for i in tint]
+    interim.append(rand)
+    interim.append(coding_text)
+    comp = base64.b16encode(str(interim).encode("UTF-8")).decode("UTF-8")
 
 
 def open_file():
@@ -71,9 +74,9 @@ def save_file():
             if file_save is None:
                 return
 
-            file_save.write(base64.b64encode(str(rand).encode("UTF-8")).decode("UTF-8"))
-            file_save.write(" ")
-            file_save.write(base64.b64encode("".join(str(coding_text)).encode("UTF-8")).decode("UTF-8"))
+            file_save.write(base64.b64encode(str(comp).encode("UTF-8")).decode("UTF-8"))
+            # file_save.write(" ")
+            # file_save.write(base64.b64encode("".join(str(coding_text)).encode("UTF-8")).decode("UTF-8"))
             file_save.close()
     except:
         pass
@@ -165,7 +168,7 @@ def notepad(opn):
 
     notep.bind("<Control-KeyPress>", keys)
 
-    text1 = CTkTextbox(notep, height=9000, width=9000, font=("ubuntu", font))
+    text1 = CTkTextbox(notep, height=9000, width=9000, font=("ubuntu", font), wrap="word")
     text1.pack()
 
     menubar = Menu(notep)
@@ -195,7 +198,7 @@ def info(opn):
     infor.title("Notepad++ - information")
     infor.iconbitmap('icon.ico')
 
-    text = CTkTextbox(infor, height=9000, width=9000, font=("ubuntu", font))
+    text = CTkTextbox(infor, height=9000, width=9000, font=("ubuntu", font), wrap="word")
     text.pack()
 
     if opn:
@@ -295,6 +298,7 @@ langbox = CTkOptionMenu(master=root,
                          variable=langmenu_var,
                          font=("ubuntu", 17))
 langbox.grid(row=5, column=0, pady=(0, 70))
+
 
 
 if __name__ == '__main__':
